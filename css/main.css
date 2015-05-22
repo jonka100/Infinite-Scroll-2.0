@@ -2,10 +2,10 @@
 	
 }
 
-img {
+.article img {
 	max-width: 100%;
 }
 
-iframe {
+.article iframe {
 	max-width: 100%;
 }

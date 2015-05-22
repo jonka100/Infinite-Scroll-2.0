@@ -1,0 +1,8 @@
+<div class="container" ng-controller="FeedController as feedCtrl">
+	<div class="col-lg-6 col-lg-offset-3" ng-repeat="article in entries">
+		<article></article>
+	</div>
+	<div class="col-lg-6 col-lg-offset-3">
+		<button class="btn btn-default" ng-click="nextSection()">{{feedCtrl.button}}</button>
+	</div>
+</div>
