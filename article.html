@@ -1,5 +1,5 @@
 <div class="article">
-	<h2>{{article.title}}</h2>
-	<div ng-bind-html="article.content | to_trusted"></div>
+	<h2 ng-show="article.visible">{{article.title}}</h2>
+	<div ng-show="article.visible" ng-bind-html="article.content | to_trusted"></div>
 	<hr>
 </div>
