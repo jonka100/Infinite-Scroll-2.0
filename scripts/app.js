@@ -6,13 +6,14 @@ app.filter('to_trusted', ['$sce', function($sce){
     };
 }]);
 
-app.controller('FeedController', ['$http', '$scope', '$sce', function($http, $scope, $sce){
-	$scope.entries = {};
+app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
+	$scope.entries = [];
 	this.button = "Load more";
-	$scope.currentSection = 0;
+	$scope.currentSection = 0;	
 	
 	$scope.nextSection = function() {
 		console.log("Get next section");
+		$scope.notLoading = false;
 
 		$http.get('test.json').
 		  success(function(data, status, headers, config) {
@@ -21,31 +22,37 @@ app.controller('FeedController', ['$http', '$scope', '$sce', function($http, $sc
 		    var sectionSize = 5;
 		    var currentIndex = $scope.currentSection * sectionSize;
 
-		    $scope.entries = data.responseData.feed.entries.slice(currentIndex, currentIndex + sectionSize);
-		    $scope.currentSection++;
-		    $scope.title = data.responseData.feed.title;
+		    if (data.responseData.feed.entries.length > currentIndex + sectionSize) {
+			    $scope.entries = $scope.entries.concat(data.responseData.feed.entries.slice(currentIndex, currentIndex + sectionSize));
+		    	$scope.currentSection++;
+		    	$scope.title = data.responseData.feed.title;
+		    	$scope.notLoading = true;
+		    }    
 		  });
 	};
 
 	$scope.nextSection();
+
+	// Detects if the user is scrolling
+	angular.element($window).bind('scroll', function() {
+		// console.log($window.pageYOffset + " ||||| " + getDocHeight() + " ||||| " + $window.innerHeight);
+
+		var endOffset = 500;
+
+		// Detects if the user is close to the end of the page, then load more content
+		if ($window.pageYOffset >= (getDocHeight() - $window.innerHeight) - endOffset) {
+			console.log("Near end");
+			if ($scope.notLoading) {
+				$scope.nextSection();
+			}
+		}	
+	});
 }]);
 
 app.directive('infiniteFeed', function($window) {
 	return {
 		restrict: 'EA',
-		templateUrl: 'feed.html',
-		link: function (scope, element, attributes, parentController) {
-
-			angular.element($window).bind('scroll', function() {
-				// console.log($window.pageYOffset + " ||||| " + getDocHeight() + " ||||| " + $window.innerHeight);
-
-				var endOffset = 500;
-
-				if ($window.pageYOffset >= (getDocHeight() - $window.innerHeight) - endOffset) {
-					console.log("Near end");
-				}	
-			});
-		}
+		templateUrl: 'feed.html'
 	};
 });
 
