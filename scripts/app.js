@@ -1,3 +1,8 @@
+// Force the scrollbar to start at top to prevent loading all content directly
+$(window).on('beforeunload', function(){
+  $(window).scrollTop(0);
+});
+
 var app = angular.module('TestApp', []);
 
 app.filter('to_trusted', ['$sce', function($sce){
@@ -9,7 +14,7 @@ app.filter('to_trusted', ['$sce', function($sce){
 app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
 	$scope.entries = [];
 	this.button = "Load more";
-	$scope.currentSection = 0;	
+	$scope.currentSection = 0;
 	
 	$scope.nextSection = function() {
 		console.log("Get next section");
