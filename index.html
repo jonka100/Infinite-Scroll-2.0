@@ -12,6 +12,24 @@
 </head>
 <body ng-app="FeedApp">
 	<navbar></navbar>
-	<infinite-feed></infinite-feed>
+	<div ng-controller="SelectViewController as view"> 
+		<div class="col-lg-6 col-lg-offset-3">
+			<button class="btn btn-default" ng-click="view.choseInfinite()">Infinite-Scroll</button>
+			<button class="btn btn-default" ng-click="view.chosePagination()">Pagination</button>
+		</div>
+		<infinite-feed ng-show="view.infinite"></infinite-feed>
+
+		<div ng-controller="PaginationDemoCtrl" ng-show="view.pagination">
+		   	<div class="col-lg-6 col-lg-offset-3" ng-repeat="article in entries">
+				<article></article>
+			</div>
+			<div class="col-lg-6 col-lg-offset-3">
+			    <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" 	boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()">		    	
+			    </pagination>
+			</div>
+		</div>
+
+	</div>
+
 </body>
 </html>

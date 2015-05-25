@@ -11,6 +11,21 @@ app.filter('to_trusted', ['$sce', function($sce){
     };
 }]);
 
+app.controller('SelectViewController', function(){
+	this.infinite = true;
+	this.pagination = false;
+
+	this.choseInfinite = function() {
+		this.infinite = true;
+		this.pagination = false;
+	};
+
+	this.chosePagination = function() {
+		this.infinite = false;
+		this.pagination = true;
+	};
+});
+
 app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
 	$scope.entries = [];
 	this.button = "Load more";
@@ -86,6 +101,64 @@ app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function
 		$scope.previousPageYOffset = $window.pageYOffset;
 	});
 }]);
+
+app.controller('PaginationDemoCtrl', function($http, $scope) {
+	$scope.totalItems = 64;
+	$scope.currentPage = 4;
+
+	$scope.entries = [];
+	$scope.currentSection = 0;
+	$scope.currentScrollSection = 0;
+	$scope.previousPageYOffset = 0;
+	$scope.pixelsScrolledUp = 0;
+	$scope.sectionSize = 5;
+
+	$scope.setPage = function (pageNo) {
+		$scope.currentPage = pageNo;
+				// getSection($scope.currentPage);
+		console.log("hejejej");
+	};
+
+	$scope.pageChanged = function() {
+		console.log("hejejejjjjjj");
+
+		$scope.getSection($scope.bigCurrentPage);
+		$(window).scrollTop(0);
+	};
+
+	$scope.getSection = function(sectionNumber) {
+		console.log("Get section");
+		$scope.notLoading = false;
+
+		$http.get('test.json').
+		  success(function(data, status, headers, config) {
+		    // This callback will be called asynchronously
+		    // when the response is available
+		    var currentIndex = sectionNumber * $scope.sectionSize ;
+
+		    if (data.responseData.feed.entries.length > currentIndex + $scope.sectionSize ) {
+			    // $scope.entries = $scope.entries.concat(data.responseData.feed.entries.slice(currentIndex, currentIndex + sectionSize));
+		    	var tempEntries = data.responseData.feed.entries.slice(currentIndex, currentIndex + $scope.sectionSize );
+
+			   	for (var i = tempEntries.length - 1; i >= 0; i--) {
+			   		tempEntries[i].visible = true;
+			   	};
+
+			   	$scope.entries = tempEntries;
+
+		    	$scope.currentSection++;
+		    	$scope.currentScrollSection = $scope.currentSection;
+		    	$scope.title = data.responseData.feed.title;
+		    	$scope.notLoading = true;
+		    	$scope.bigTotalItems = data.responseData.feed.entries.length;
+		    }    
+		  });
+	};
+
+	$scope.getSection(1);
+  	$scope.maxSize = $scope.sectionSize;
+  	$scope.bigCurrentPage = 1;
+});
 
 app.directive('infiniteFeed', function($window) {
 	return {
