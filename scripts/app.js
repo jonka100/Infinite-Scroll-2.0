@@ -3,7 +3,7 @@ $(window).on('beforeunload', function(){
   $(window).scrollTop(0);
 });
 
-var app = angular.module('TestApp', []);
+var app = angular.module('FeedApp', ['ui.bootstrap']);
 
 app.filter('to_trusted', ['$sce', function($sce){
     return function(text) {
