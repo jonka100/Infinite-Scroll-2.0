@@ -79,7 +79,7 @@ app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function
 			if ($window.pageYOffset >= (getDocHeight() - $window.innerHeight) - endOffset) {
 				console.log("Near end");
 				if ($scope.notLoading) {
-					$scope.nextSection();
+					//$scope.nextSection();
 				}
 			}
 		}
