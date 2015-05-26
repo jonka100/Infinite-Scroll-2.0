@@ -3,7 +3,27 @@ $(window).on('beforeunload', function(){
   $(window).scrollTop(0);
 });
 
-var app = angular.module('FeedApp', ['ui.bootstrap']);
+var app = angular.module('FeedApp', ['ui.bootstrap', 'ngRoute']);
+
+app.config(['$routeProvider', '$locationProvider',
+  function($routeProvider, $locationProvider) {
+    $routeProvider
+      .when('/article/:title', {
+        templateUrl: 'details.html',
+        controller: 'ArticleController',
+        controllerAs: 'article'
+      });
+    $locationProvider.html5Mode(true);
+}]);
+
+app.controller('ArticleController', ['$routeParams', '$scope', function($routeParams, $scope) {
+  this.name = "ArticleController";
+  this.params = $routeParams;
+
+  $scope.$root.$broadcast("ShowDetails", {});
+  // view.pagination = false;
+  // view.infinite = false;
+}]);
 
 app.filter('to_trusted', ['$sce', function($sce){
     return function(text) {
@@ -11,20 +31,26 @@ app.filter('to_trusted', ['$sce', function($sce){
     };
 }]);
 
-app.controller('SelectViewController', function(){
-	this.infinite = true;
-	this.pagination = false;
+app.controller('SelectViewController', ['$scope', function($scope){
+	$scope.infinite = true;
+	$scope.pagination = false;
 
-	this.choseInfinite = function() {
-		this.infinite = true;
-		this.pagination = false;
+	$scope.choseInfinite = function() {
+		$scope.infinite = true;
+		$scope.pagination = false;
 	};
 
-	this.chosePagination = function() {
-		this.infinite = false;
-		this.pagination = true;
+	$scope.chosePagination = function() {
+		$scope.infinite = false;
+		$scope.pagination = true;
 	};
-});
+
+	$scope.$on("ShowDetails", function(event, args){
+		$scope.infinite = false;
+		$scope.pagination = false;
+
+	});
+}]);
 
 app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
 	$scope.entries = [];
@@ -66,17 +92,6 @@ app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function
 		    }    
 		  });
 	};
-
-	$scope.changeView = function(title){
-		for (var i = $scope.entries.length - 1; i >= 0; i--) {
-			if ($scope.entries[i].title === title){
-				//$scope = $scope || angular.element(document).scope();
-				window.location = "/article.html";
-				//$location.path("/article.html");
-				// $scope.$apply();
-			}
-		};
-	}
 
 	$scope.nextSection();
 

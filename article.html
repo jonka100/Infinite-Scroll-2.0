@@ -1,4 +1,4 @@
 <div class="article">
-	<a href="#" ng-show="article.visible" class="article__title">{{article.title}}</a>
+	<a ng-href="article/{{article.title}}" ng-show="article.visible" class="article__title">{{article.title}}</a>
 	<div ng-show="article.visible" ng-bind-html="article.content | to_trusted"></div>
 </div>
