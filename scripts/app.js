@@ -67,6 +67,17 @@ app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function
 		  });
 	};
 
+	$scope.changeView = function(title){
+		for (var i = $scope.entries.length - 1; i >= 0; i--) {
+			if ($scope.entries[i].title === title){
+				//$scope = $scope || angular.element(document).scope();
+				window.location = "/article.html";
+				//$location.path("/article.html");
+				// $scope.$apply();
+			}
+		};
+	}
+
 	$scope.nextSection();
 
 	// Detects if the user is scrolling
