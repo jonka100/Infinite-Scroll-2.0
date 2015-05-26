@@ -10,3 +10,11 @@
 .article iframe {
 	max-width: 100%;
 }
+
+.article__title {
+	font-size: 24px;
+}
+
+.article__title a:focus, a:hover {
+	text-decoration: none;
+}
