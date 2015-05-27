@@ -23,7 +23,6 @@ app.config(['$routeProvider', '$locationProvider',
         controller: 'FeedController',
         controllerAs: 'FeedCtrl'
       });
-
     $locationProvider.html5Mode(true);
 }]);
 
