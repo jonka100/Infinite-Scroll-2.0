@@ -20,8 +20,8 @@
 	<div ng-controller="SelectViewController as view" class="container">
 	 <div ng-view></div>
 		<div class="col-lg-6 col-lg-offset-3">
-			<button class="btn btn-default" ng-click="choseInfinite()">Infinite-Scroll</button>
-			<button class="btn btn-default" ng-click="chosePagination()">Pagination</button>
+			<button class="btn btn-default" ng-click="choseInfinite()" ng-show="showButtons">Infinite-Scroll</button>
+			<button class="btn btn-default" ng-click="chosePagination()" ng-show="showButtons">Pagination</button>
 		</div>
 		<infinite-feed ng-show="infinite"></infinite-feed>
 

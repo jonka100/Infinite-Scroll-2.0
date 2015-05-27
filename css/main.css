@@ -18,3 +18,7 @@
 .article__title a:focus, a:hover {
 	text-decoration: none;
 }
+
+.center-h2 {
+	text-align: center;
+}
