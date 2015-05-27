@@ -12,17 +12,19 @@ app.config(['$routeProvider', '$locationProvider',
         templateUrl: 'details.html',
         controller: 'ArticleController',
         controllerAs: 'article'
+      })
+      .when('/pagination', {
+        templateUrl: 'pagination-feed.html',
+        controller: 'PaginationDemoCtrl',
+        controllerAs: 'PaginationCtrl'
+      })
+      .otherwise({
+        templateUrl: 'feed.html',
+        controller: 'FeedController',
+        controllerAs: 'FeedCtrl'
       });
+
     $locationProvider.html5Mode(true);
-}]);
-
-app.controller('ArticleController', ['$routeParams', '$scope', function($routeParams, $scope) {
-  this.name = "ArticleController";
-  this.params = $routeParams;
-
-  $scope.$root.$broadcast("ShowDetails", {});
-  // view.pagination = false;
-  // view.infinite = false;
 }]);
 
 app.filter('to_trusted', ['$sce', function($sce){
@@ -31,30 +33,15 @@ app.filter('to_trusted', ['$sce', function($sce){
     };
 }]);
 
-app.controller('SelectViewController', ['$scope', function($scope){
-	$scope.infinite = true;
-	$scope.pagination = false;
-
-	$scope.choseInfinite = function() {
-		$scope.infinite = true;
-		$scope.pagination = false;
-	};
-
-	$scope.chosePagination = function() {
-		$scope.infinite = false;
-		$scope.pagination = true;
-	};
-
-	$scope.$on("ShowDetails", function(event, args){
-		$scope.infinite = false;
-		$scope.pagination = false;
-
-	});
+app.controller('ArticleController', ['$routeParams', '$scope', function($routeParams, $scope) {
+  this.name = "ArticleController";
+  this.params = $routeParams;
 }]);
 
 app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
+	this.name = "FeedController";
 	$scope.entries = [];
-	this.button = "Load more";
+	$scope.button = "Load more";
 	$scope.currentSection = 0;
 	$scope.currentScrollSection = 0;
 	$scope.previousPageYOffset = 0;
@@ -129,6 +116,7 @@ app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function
 }]);
 
 app.controller('PaginationDemoCtrl', function($http, $scope) {
+	this.name = "PaginationDemoCtrl";
 	$scope.totalItems = 64;
 	$scope.currentPage = 4;
 
@@ -141,13 +129,9 @@ app.controller('PaginationDemoCtrl', function($http, $scope) {
 
 	$scope.setPage = function (pageNo) {
 		$scope.currentPage = pageNo;
-				// getSection($scope.currentPage);
-		console.log("hejejej");
 	};
 
 	$scope.pageChanged = function() {
-		console.log("hejejejjjjjj");
-
 		$scope.getSection($scope.bigCurrentPage);
 		$(window).scrollTop(0);
 	};
@@ -184,13 +168,6 @@ app.controller('PaginationDemoCtrl', function($http, $scope) {
 	$scope.getSection(1);
   	$scope.maxSize = $scope.sectionSize;
   	$scope.bigCurrentPage = 1;
-});
-
-app.directive('infiniteFeed', function($window) {
-	return {
-		restrict: 'EA',
-		templateUrl: 'feed.html'
-	};
 });
 
 app.directive('article', function() {

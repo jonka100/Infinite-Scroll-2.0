@@ -1,0 +1,8 @@
+<div ng-repeat="article in entries">
+	<article></article>
+	<hr>
+</div>
+<div>
+    <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" 	boundary-links="true" rotate="false" num-pages="numPages" ng-change="pageChanged()">		    	
+    </pagination>
+</div>
