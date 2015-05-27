@@ -27,16 +27,32 @@ app.config(['$routeProvider', '$locationProvider',
     $locationProvider.html5Mode(true);
 }]);
 
+app.controller('ArticleController', ['$routeParams', '$scope', '$http', function($routeParams, $scope, $http) {
+  this.name = "ArticleController";
+  $scope.params = $routeParams;
+
+  $http.get('test.json').
+		  success(function(data, status, headers, config) {
+		    // This callback will be called asynchronously
+		    // when the response is available
+
+		    for (var i = data.responseData.feed.entries.length - 1; i >= 0; i--) {
+		  	if (data.responseData.feed.entries[i].title === $scope.params.title){
+		  		$scope.details = data.responseData.feed.entries[i].content;
+		  		$scope.title = data.responseData.feed.entries[i].title;
+		  		break;
+		  	}
+		  };
+	  });
+  $scope.$root.$broadcast("ShowDetails", {});
+}]);
+
 app.filter('to_trusted', ['$sce', function($sce){
     return function(text) {
         return $sce.trustAsHtml(text);
     };
 }]);
 
-app.controller('ArticleController', ['$routeParams', '$scope', function($routeParams, $scope) {
-  this.name = "ArticleController";
-  this.params = $routeParams;
-}]);
 
 app.controller('FeedController', ['$http', '$scope', '$sce', '$window', function($http, $scope, $sce, $window){
 	this.name = "FeedController";
