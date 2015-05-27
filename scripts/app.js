@@ -9,17 +9,17 @@ app.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/article/:title', {
-        templateUrl: 'details.html',
+        templateUrl: 'partials/details.html',
         controller: 'ArticleController',
         controllerAs: 'article'
       })
       .when('/pagination', {
-        templateUrl: 'pagination-feed.html',
+        templateUrl: 'partials/pagination-feed.html',
         controller: 'PaginationDemoCtrl',
         controllerAs: 'PaginationCtrl'
       })
       .otherwise({
-        templateUrl: 'feed.html',
+        templateUrl: 'partials/feed.html',
         controller: 'FeedController',
         controllerAs: 'FeedCtrl'
       });
@@ -189,14 +189,14 @@ app.controller('PaginationDemoCtrl', function($http, $scope) {
 app.directive('article', function() {
 	return {
 		restrict: 'EA',
-		templateUrl: 'article.html'
+		templateUrl: 'partials/article.html'
 	};
 });
 
 app.directive('navbar', function() {
 	return {
 		restrict: 'EA',
-		templateUrl: 'navbar.html',
+		templateUrl: 'partials/navbar.html',
 		controller: function($http, $scope){
 			$http.get('test.json').
 				success(function(data, status, headers, config) {
